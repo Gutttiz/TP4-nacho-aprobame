@@ -1,0 +1,13 @@
+{% extends 'blog/base_blog.html' %}
+{% block content %}
+<h1>Blog</h1>
+{% for post in posts %}
+  <article class="post-card">
+    <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+    <p>{{ post.content|truncatechars:200 }}</p>
+  </article>
+{% empty %}
+  <p>No hay posts aún.</p>
+{% endfor %}
+{% endblock %}
+

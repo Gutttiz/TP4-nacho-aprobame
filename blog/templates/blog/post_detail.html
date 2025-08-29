@@ -1,0 +1,68 @@
+{% extends "blog/base_blog.html" %}
+
+{% block content %}
+<section id="post-detail-container">
+    <div class="post-detail">
+        <article class="post-content">
+            <h2 class="post-title">{{ post.titulo }}</h2>
+            {% if post.imagen %}
+                <div class="post-image">
+                    <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+                </div>
+            {% endif %}
+            <p class="post-body">{{ post.contenido }}</p>
+            <div class="post-meta">
+                <small>Publicado el {{ post.creado|date:"d M Y H:i" }}</small>
+            </div>
+        </article>
+
+        <div class="comments-section">
+            <h3>Comentarios</h3>
+            {% for comentario in post.comentarios.all %}
+                <div class="comentario">
+                    <div class="comentario-header">
+                        <span class="comentario-usuario">
+                            @{{ comentario.autor }}
+                        </span>
+                    </div>
+                    <div class="comentario-body">
+                        <p>{{ comentario.contenido }}</p>
+                    </div>
+                    <div class="comentario-footer">
+                        <small>{{ comentario.creado|date:"d M Y H:i" }}</small>
+                        <a href="#" class="comentario-reply">Responder</a>
+                    </div>
+                    {% for respuesta in comentario.respuestas.all %}
+                        <div class="respuesta">
+                            <div class="comentario-header">
+                                <span class="comentario-usuario">
+                                    @{{ respuesta.autor }}
+                                </span>
+                            </div>
+                            <div class="comentario-body">
+                                <p>{{ respuesta.contenido }}</p>
+                            </div>
+                            <div class="comentario-footer">
+                                <small>{{ respuesta.creado|date:"d M Y H:i" }}</small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% empty %}
+                <p>No hay comentarios todavía. Sé el primero en comentar.</p>
+            {% endfor %}
+        </div>
+
+        <div class="form-comentario">
+            <h3>Poner un comentario</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+
+        <a href="{% url 'blog:post_list' %}" class="btn-volver">Volver al Blog</a>
+      </div>
+</section>
+{% endblock %}

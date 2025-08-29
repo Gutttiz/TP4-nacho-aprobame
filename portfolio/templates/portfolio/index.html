@@ -1,0 +1,251 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gutttiz | Portfolio</title>
+  <link rel="stylesheet" href="{% static 'portfolio/css/styles.css' %}" />
+  <link rel="icon" href="{% static 'portfolio/img/favicon.ico' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <!-- Animación de inicio -->
+  <div id="intro-animation">
+    <div class="block block-left"></div>
+    <div class="block block-right"></div>
+    <div class="intro-text">
+      <span>Portfolio</span>
+    </div>
+  </div>
+
+  <header class="hidden-after-intro">
+    <nav class="navbar">
+      <ul>
+        <li><a href="#sobre-mi" id="link-sobre-mi">Sobre mí</a></li>
+        <li><a href="#photoshop">Photoshop</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#habilidades">Habilidades</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="/blog/" class="{% if request.path == '/blog/' %}active{% endif %}">Blog</a></li>
+      </ul>
+      <button id="toggle-dark" class="luna-btn" aria-label="Modo oscuro" title="Modo oscuro">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <a href="{% static 'portfolio/pdf/cv.pdf' %}" download class="cv-btn" title="Descargar CV"><i class="fa-solid fa-download"></i></a>
+    </nav>
+  </header>
+
+  <main class="hidden-after-intro">
+    <!-- SOBRE MÍ -->
+    <section class="hero" id="sobre-mi">
+      <img src="{% static 'portfolio/img/Imagenportada.jpg' %}" alt="Imagen de portada" class="hero-img ocultar-despues-intro">
+      <div class="hero-text">
+        <h1>Francisco Gutierrez</h1>
+        <p>Desarrollador web en formación.<br>Minimalismo, simplicidad y funcionalidad.</p>
+      </div>
+    </section>
+
+    <!-- PHOTOSHOP -->
+    <section id="photoshop">
+      <h2>Photoshop</h2>
+      <div class="proyectos-flex">
+        <article class="proyecto">
+          <img src="{% static 'portfolio/img/Trabajo1.png' %}" alt="Proyecto Photoshop 1" class="ps-thumb">
+          <h3>Póster de película ficticia "The Outsider"</h3>
+          <p>Póster ficticio de película creado en Photoshop, combinando imágenes y tipografía para simular un estreno cinematográfico.</p>
+        </article>
+        <article class="proyecto">
+          <img src="{% static 'portfolio/img/Trabajo2.png' %}" alt="Proyecto Photoshop 2" class="ps-thumb">
+          <h3>Fusión deportiva</h3>
+          <p>Imagen que combina fútbol y básquet, representando la unión de dos deportes populares.</p>
+        </article>
+        <article class="proyecto">
+          <img src="{% static 'portfolio/img/Trabajo3.png' %}" alt="Proyecto Photoshop 3" class="ps-thumb">
+          <h3>Edición de retrato en Photoshop</h3>
+          <p>Trabajo de edición facial con ajustes de piel, labios y ojos, sin perder naturalidad.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROYECTOS -->
+    <section id="proyectos">
+      <h2>Proyectos</h2>
+      <div class="proyectos-flex">
+        <article class="proyecto">
+          <div class="slider">
+            <img src="{% static 'portfolio/img/Trabajo5.png' %}" alt="Space Invaders 1" class="slider-img active">
+            <img src="{% static 'portfolio/img/Trabajo4.png' %}" alt="Space Invaders 2" class="slider-img">
+            <button class="slider-btn prev" aria-label="Imagen anterior">&#8592;</button>
+            <button class="slider-btn next" aria-label="Imagen siguiente">&#8594;</button>
+          </div>
+          <h3>Space Invaders</h3>
+          <p>Juego de naves con el fin de acabar con los enemigos.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- HABILIDADES -->
+    <section id="habilidades">
+      <h2>Habilidades</h2>
+      <div class="skills-cards">
+        <div class="skill-card">
+          <i class="fa-brands fa-html5"></i>
+          <h3>HTML</h3>
+          <p>Estructura básica de páginas web.</p>
+        </div>
+        <div class="skill-card">
+          <i class="fa-brands fa-css3-alt"></i>
+          <h3>CSS</h3>
+          <p>Estilos y diseño visual para la web.</p>
+        </div>
+        <div class="skill-card">
+          <i class="fa-brands fa-js"></i>
+          <h3>JavaScript</h3>
+          <p>Interactividad y lógica en el navegador.</p>
+        </div>
+        <div class="skill-card">
+          <i class="fa-brands fa-python"></i>
+          <h3>Python</h3>
+          <p>Lenguaje de programación versátil y popular.</p>
+        </div>
+        <div class="skill-card">
+          <i class="fa-solid fa-file-excel"></i>
+          <h3>Excel</h3>
+          <p>Hoja de cálculo para datos.</p>
+        </div>
+      </div>
+    </section>
+<!-- BLOG -->
+<section id="blog-latest">
+  <div class="blog-header">
+    <h2>Últimos posts</h2>
+    <a href="{% url 'blog:crear_post' %}" class="btn-crear-post" title="Crear nuevo post">
+      <i class="fa-solid fa-plus"></i>
+    </a>
+  </div>
+  
+  {% if posts %}
+    <div class="blog-posts">
+      {% for post in posts %}
+        <div class="post" onclick="window.location.href='{% url 'blog:post_detail' post.pk %}'">
+          <h3>{{ post.titulo }}</h3>
+          {% if post.imagen %}
+            <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+          {% endif %}
+          <p>{{ post.contenido|truncatewords:20 }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="no-posts">
+      <p>No hay posts aún.</p>
+      <a href="{% url 'blog:crear_post' %}" class="btn-crear-primer-post">Crear el primer post</a>
+    </div>
+  {% endif %}
+</section>
+
+<style>
+  /* Estilos minimalistas para el blog */
+  .blog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-crear-post {
+    width: 35px;
+    height: 35px;
+    border: 1px solid #333;
+    background: transparent;
+    color: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+  }
+
+  .btn-crear-post:hover {
+    background: #333;
+    color: #fff;
+  }
+
+  /* Modo oscuro */
+  body.dark-mode .btn-crear-post {
+    border-color: #fff;
+    color: #fff;
+  }
+
+  body.dark-mode .btn-crear-post:hover {
+    background: #fff;
+    color: #333;
+  }
+
+  .no-posts {
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .no-posts p {
+    margin-bottom: 1rem;
+    color: #666;
+  }
+
+  body.dark-mode .no-posts p {
+    color: #ccc;
+  }
+
+  .btn-crear-primer-post {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid #333;
+    background: transparent;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
+  }
+
+  .btn-crear-primer-post:hover {
+    background: #333;
+    color: #fff;
+  }
+
+  body.dark-mode .btn-crear-primer-post {
+    border-color: #fff;
+    color: #fff;
+  }
+
+  body.dark-mode .btn-crear-primer-post:hover {
+    background: #fff;
+    color: #333;
+  }
+</style>
+
+
+    <!-- CONTACTO -->
+    <section id="contacto">
+      <h2>Contacto</h2>
+      <a class="btn btn-contacto" href="https://mail.google.com/mail/?view=cm&to=franciscogutierrez.fngf@gmail.com" target="_blank" rel="noopener">franciscogutierrez.fngf@gmail.com</a>
+      <a class="btn btn-contacto" href="https://github.com/Gutttiz" target="_blank" rel="noopener">GitHub</a>
+    </section>
+
+  </main>
+
+  <footer class="hidden-after-intro">
+    <small>&copy; 2025 Portfolio Profesional Personalizado</small>
+  </footer>
+
+  <!-- Visor de imagen en pantalla completa -->
+  <div id="fullscreen-viewer" class="fullscreen-hidden">
+    <img id="fullscreen-img" src="" alt="Vista en pantalla completa">
+  </div>
+  
+  <script src="{% static 'portfolio/js/main.js' %}"></script>
+</body>
+</html>

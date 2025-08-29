@@ -1,0 +1,112 @@
+{% extends "blog/base_blog.html" %}
+
+{% block content %}
+<div class="crear-post-container">
+    <h2>Crear Nuevo Post</h2>
+    <form method="POST" enctype="multipart/form-data" class="post-form" id="postForm">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.titulo.id_for_label }}">Título:</label>
+            {{ form.titulo }}
+            <div class="error-message" id="titulo-error">El título es obligatorio</div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.contenido.id_for_label }}">Contenido:</label>
+            {{ form.contenido }}
+            <div class="error-message" id="contenido-error">El contenido es obligatorio</div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.imagen.id_for_label }}">Imagen (opcional):</label>
+            {{ form.imagen }}
+        </div>
+        <div class="form-buttons">
+            <button type="submit" class="btn-submit" id="submitBtn">Crear Post</button>
+            <a href="{% url 'blog:post_list' %}" class="btn-cancel">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('postForm');
+    const tituloField = document.getElementById('id_titulo');
+    const contenidoField = document.getElementById('id_contenido');
+    const submitBtn = document.getElementById('submitBtn');
+    const tituloError = document.getElementById('titulo-error');
+    const contenidoError = document.getElementById('contenido-error');
+
+    // Función para validar un campo
+    function validateField(field, errorElement) {
+        const value = field.value.trim();
+        if (value === '') {
+            field.classList.add('invalid');
+            errorElement.classList.add('show');
+            return false;
+        } else {
+            field.classList.remove('invalid');
+            errorElement.classList.remove('show');
+            return true;
+        }
+    }
+
+    // Validar en tiempo real mientras escribes
+    tituloField.addEventListener('input', function() {
+        validateField(this, tituloError);
+        updateSubmitButton();
+    });
+
+    contenidoField.addEventListener('input', function() {
+        validateField(this, contenidoError);
+        updateSubmitButton();
+    });
+
+    // Validar cuando pierdes el foco
+    tituloField.addEventListener('blur', function() {
+        validateField(this, tituloError);
+        updateSubmitButton();
+    });
+
+    contenidoField.addEventListener('blur', function() {
+        validateField(this, contenidoError);
+        updateSubmitButton();
+    });
+
+    // Función para habilitar/deshabilitar el botón de envío
+    function updateSubmitButton() {
+        const tituloValid = validateField(tituloField, tituloError);
+        const contenidoValid = validateField(contenidoField, contenidoError);
+        
+        if (tituloValid && contenidoValid) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.6';
+        }
+    }
+
+    // Validar al enviar el formulario
+    form.addEventListener('submit', function(e) {
+        const tituloValid = validateField(tituloField, tituloError);
+        const contenidoValid = validateField(contenidoField, contenidoError);
+        
+        if (!tituloValid || !contenidoValid) {
+            e.preventDefault(); // Evita que se envíe el formulario
+            
+            // Mostrar alerta
+            alert('Por favor, completa todos los campos obligatorios.');
+            
+            // Enfocar el primer campo con error
+            if (!tituloValid) {
+                tituloField.focus();
+            } else if (!contenidoValid) {
+                contenidoField.focus();
+            }
+        }
+    });
+
+    // Validación inicial al cargar la página
+    updateSubmitButton();
+});
+</script>
+{% endblock %}

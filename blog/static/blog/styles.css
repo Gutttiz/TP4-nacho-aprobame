@@ -1,0 +1,575 @@
+/* =========================
+   VARIABLES Y FUENTE
+   ========================= */
+:root {
+  --color-bg: #fff;
+  --color-text: #111;
+  --color-accent: #222;
+  --color-btn: #fff;
+  --color-btn-bg: #222;
+  --color-btn-hover: #fff;
+  --color-btn-bg-hover: #444;
+  --color-border: #222;
+  --color-gradient: linear-gradient(135deg, #f5f5f5 0%, #d3d3d3 100%);
+}
+
+@font-face {
+  font-family: 'MiFuente';
+  src: url('Fuentetitulo.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* =========================
+   RESET Y BODY
+   ========================= */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-gradient);
+  color: var(--color-text);
+  font-family: 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+  position: relative;
+  z-index: 1;
+}
+
+/* Fondo de imagen con opacidad */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: url('Imagenportada.jpg') center/cover no-repeat;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+/* =========================
+   HEADER Y NAVBAR
+   ========================= */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.2em 2em;
+}
+
+nav ul {
+  display: flex;
+  gap: 2em;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 1em;
+  transition: color 0.2s;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.cv-btn, .luna-btn {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  margin-left: 1em;
+  color: var(--color-accent);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.luna-btn:hover {
+  color: #888;
+}
+
+/* =========================
+   MAIN Y SECCIONES
+   ========================= */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 7em 1em 2em 1em; /* Espacio arriba para header fijo */
+}
+
+section {
+  margin-bottom: 2em;
+}
+
+/* =========================
+   HERO (Sobre mí)
+   ========================= */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 340px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  margin-bottom: 2em;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #eee;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.1);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.hero-text {
+  position: relative;
+  z-index: 2;
+  background: rgba(255,255,255,0.85);
+  padding: 2em 2.5em;
+  border-radius: 0 0 18px 0;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+  margin: 0 0 2em 2em;
+}
+
+.hero-text h1 {
+  font-size: 2.5em;
+  margin: 0 0 0.3em 0;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.hero-text p {
+  font-size: 1.1em;
+  margin: 0;
+  color: #222;
+}
+
+/* =========================
+   TITULOS Y SECCIONES
+   ========================= */
+h2 {
+  font-size: 1.3em;
+  font-weight: 700;
+  margin: 2em 0 1em 0;
+  color: var(--color-accent);
+  text-align: left;
+}
+
+/* =========================
+   PROYECTOS Y PHOTOSHOP
+   ========================= */
+.proyectos-flex {
+  display: flex;
+  gap: 1.5em;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.proyecto {
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 1.2em;
+  border-radius: 10px;
+  min-width: 200px;
+  max-width: 240px;
+  margin-bottom: 1em;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.proyecto h3 {
+  margin: 0 0 0.3em 0;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.ps-thumb {
+  width: 200px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.7em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  display: block;
+  background: #fff;
+}
+#photoshop .proyectos-flex {
+  justify-content: center;
+}
+/* =========================
+   SLIDER (Carrusel de imágenes)
+   ========================= */
+.slider {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 0.7em auto;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1;
+}
+
+.slider-img.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2em;
+  cursor: pointer;
+  z-index: 3;
+  opacity: 0.8;
+  transition: background 0.2s;
+}
+
+.slider-btn.prev { left: 8px; }
+.slider-btn.next { right: 8px; }
+
+.slider-btn:hover {
+  background: #444;
+}
+
+/* =========================
+   HABILIDADES
+   ========================= */
+.skills-cards {
+  display: flex;
+  gap: 1.5em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.skill-card img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 0.4em auto;
+}
+.skill-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 1.2em 1.5em;
+  text-align: center;
+  width: 170px;
+}
+.skill-card i {
+  font-size: 2.2em;
+  margin-bottom: 0.4em;
+  color: #e44d26;
+}
+.skill-card h3 {
+  margin: 0.3em 0 0.5em 0;
+  font-size: 1.1em;
+}
+.skill-card p {
+  font-size: 0.98em;
+  color: #555;
+}
+
+/* =========================
+   BOTONES
+   ========================= */
+.btn, .btn-contacto {
+  display: inline-block;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  margin: 0.3em 0.2em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.btn:hover,
+.btn:focus,
+.btn-contacto:hover,
+.btn-contacto:focus {
+  background: #444;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  outline: none;
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+footer {
+  text-align: center;
+  padding: 2em 0 1em 0;
+  font-size: 0.95em;
+  color: #888;
+  background: #fff;
+  border-top: 1px solid #eee;
+}
+
+/* =========================
+   FULLSCREEN VIEWER
+   ========================= */
+#fullscreen-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  transition: opacity 0.3s;
+}
+#fullscreen-viewer img[src=""] {
+  display: none;
+}
+#fullscreen-viewer.fullscreen-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+#fullscreen-viewer img {
+  max-width: 90vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #fff;
+  padding: 1.5em;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.5);
+  display: block;
+}
+
+/* =========================
+   ANIMACIÓN DE INICIO
+   ========================= */
+.hidden-after-intro {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(.77,0,.18,1), transform 0.8s cubic-bezier(.77,0,.18,1);
+  pointer-events: none;
+}
+.visible-after-intro {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#intro-animation {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  pointer-events: all;
+  transition: opacity 0.7s;
+}
+.block {
+  position: absolute;
+  top: 0;
+  width: 50vw;
+  height: 100vh;
+  transition: transform 1.2s cubic-bezier(.77,0,.18,1);
+  z-index: 1;
+}
+.block-left {
+  left: 0;
+  background: #fff;
+  transform: translateX(0);
+  box-shadow: 4px 0 16px 0 rgba(0,0,0,0.10);
+}
+.block-right {
+  right: 0;
+  background: #111;
+  transform: translateX(0);
+}
+.intro-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  color: #111;
+  font-size: 4em;
+  font-family: 'MiFuente';
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.7s;
+  background: #fff;
+  padding: 0.3em 1.2em;
+  border-radius: 12px;
+}
+#intro-animation.active .block-left {
+  transform: translateX(-100vw);
+}
+#intro-animation.active .block-right {
+  transform: translateX(100vw);
+}
+#intro-animation.active .intro-text {
+  opacity: 0;
+}
+
+/* =========================
+   MODO OSCURO
+   ========================= */
+body.dark-mode {
+  --color-bg: #181818;
+  --color-text: #eee;
+  --color-accent: #fff;
+  --color-btn: #fff;
+  --color-btn-bg: #111;
+  --color-btn-hover: #fff;
+  --color-btn-bg-hover: #444;
+  --color-gradient: linear-gradient(135deg, #232323 0%, #444 100%);
+  background: var(--color-gradient);
+  color: var(--color-text);
+}
+body.dark-mode header,
+body.dark-mode footer {
+  background: #222;
+  color: #eee;
+  border-color: #000;
+}
+body.dark-mode .hero-text {
+  background: #222;
+  color: #fff;
+}
+body.dark-mode .proyecto,
+body.dark-mode .skill-card {
+  background: #222 !important;
+  border-color: #333 !important;
+  color: #fff !important;
+}
+body.dark-mode .ps-thumb,
+body.dark-mode .slider-img,
+body.dark-mode #fullscreen-viewer img {
+  background: #222 !important;
+}
+body.dark-mode .skill-card p,
+body.dark-mode .skill-card h3 {
+  color: #fff !important;
+}
+body.dark-mode h2,
+body.dark-mode h1,
+body.dark-mode h3,
+body.dark-mode p,
+body.dark-mode a,
+body.dark-mode label,
+body.dark-mode small {
+  color: #fff !important;
+}
+body.dark-mode .btn,
+body.dark-mode .btn-contacto {
+  background: #fff !important;
+  color: #111 !important;
+}
+body.dark-mode .btn:hover,
+body.dark-mode .btn:focus,
+body.dark-mode .btn-contacto:hover,
+body.dark-mode .btn-contacto:focus {
+  background: #444 !important;
+  color: #fff !important;
+}
+body.dark-mode .cv-btn,
+body.dark-mode .luna-btn {
+  color: #fff;
+}
+
+/* =========================
+   SCROLL OFFSET PARA HEADER FIJO
+   ========================= */
+#photoshop,
+#proyectos,
+#habilidades,
+#contacto {
+  scroll-margin-top: 100px; /* Ajusta según el alto de tu header */
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media (max-width: 900px) {
+  .navbar {
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em;
+  }
+  main {
+    padding-top: 8em;
+  }
+  .hero {
+    height: 220px;
+  }
+  .hero-text {
+    padding: 1em 1.2em;
+    margin: 0 0 1em 1em;
+  }
+  .proyectos-flex, .skills-cards {
+    flex-direction: column;
+    gap: 1em;
+  }
+  h1 {
+    font-size: 1.5em;
+  }
+  h2 {
+    font-size: 1em;
+  }
+  .intro-text {
+    font-size: 1.5em;
+    padding: 0.2em 0.7em;
+  }
+}

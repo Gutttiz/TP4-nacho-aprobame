@@ -1,0 +1,749 @@
+/* =========================
+   VARIABLES Y FUENTE
+   ========================= */
+:root {
+  --color-bg: #fff;
+  --color-text: #111;
+  --color-accent: #222;
+  --color-btn: #fff;
+  --color-btn-bg: #222;
+  --color-btn-hover: #fff;
+  --color-btn-bg-hover: #444;
+  --color-border: #222;
+  --color-gradient: linear-gradient(135deg, #f5f5f5 0%, #d3d3d3 100%);
+}
+
+@font-face {
+  font-family: 'MiFuente';
+  src: url('../fonts/Fuentetitulo.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* =========================
+   RESET Y BODY
+   ========================= */
+html { 
+  scroll-behavior: smooth; 
+}
+
+/* FONDO GENERAL - mejorado como portfolio */
+body {
+  background: var(--color-gradient);
+  color: var(--color-text);
+  font-family: 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+  position: relative;
+  z-index: 1;
+}
+
+/* Fondo de imagen con opacidad como portfolio */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: url('../img/Imagenfondo.jpg') center/cover no-repeat;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* =========================
+   HEADER Y NAVBAR
+   ========================= */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.2em 2em;
+}
+
+nav ul {
+  display: flex;
+  gap: 2em;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 1em;
+  transition: color 0.2s;
+}
+
+nav a:hover { 
+  text-decoration: underline; 
+}
+
+.cv-btn, .luna-btn {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  margin-left: 1em;
+  color: var(--color-accent);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.luna-btn:hover { 
+  color: #888; 
+}
+
+/* =========================
+   MAIN Y SECCIONES
+   ========================= */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 7em 1em 60px 1em; /* 60px para footer más pequeño */
+  position: relative;
+  z-index: 2;
+}
+
+section { 
+  margin-bottom: 2em; 
+}
+
+/* =========================
+   BLOG - POSTS LIST
+   ========================= */
+.blog-posts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.post {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #eee;
+  width: 100%;
+  max-width: 540px;
+  padding: 0 0 1.5em 0;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.25s, transform 0.25s;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+.post:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+  transform: translateY(-6px) scale(1.02);
+}
+
+.post img {
+  width: 100%;
+  max-width: 540px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 18px 18px 0 0;
+  transition: transform 0.3s;
+  background: #fff;
+}
+
+.post:hover img { 
+  transform: scale(1.04); 
+}
+
+.post h3 {
+  font-size: 1.35em;
+  font-weight: 700;
+  margin: 1.1em 1.2em 0.5em 1.2em;
+  color: var(--color-accent);
+  text-align: left;
+  align-self: flex-start;
+  letter-spacing: 0.01em;
+}
+
+.post p {
+  font-size: 1.08em;
+  color: #444;
+  margin: 0 1.2em 0.7em 1.2em;
+  line-height: 1.6em;
+  text-align: left;
+  align-self: flex-start;
+  font-weight: 400;
+}
+
+/* =========================
+   CREAR POST - FOOTER OCULTO
+   ========================= */
+body.create-post {
+  background: var(--color-gradient);
+}
+
+/* OCULTAR footer completamente en crear post */
+body.create-post footer {
+  display: none !important;
+}
+
+body.create-post main {
+  padding: 7em 1em 3rem 1em; /* sin espacio para footer */
+  min-height: calc(100vh - 7em);
+}
+
+.crear-post-container {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.crear-post-container h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--color-accent);
+  text-align: left;
+  font-family: 'MiFuente', 'Roboto', Arial, sans-serif;
+}
+
+.post-form {
+  background: #fff;
+  border-radius: 18px;
+  padding: 2.5rem;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: var(--color-accent);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #111;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(34, 34, 34, 0.1);
+}
+
+textarea { 
+  min-height: 200px; 
+}
+
+input.invalid,
+textarea.invalid {
+  border-color: #d32f2f;
+  background: #fff8f8;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  display: none;
+  margin-top: 0.3rem;
+}
+
+.error-message.show { 
+  display: block; 
+}
+
+.form-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: flex-start;
+}
+
+/* =========================
+   POST DETALLE
+   ========================= */
+.post-detail {
+  background: #fff;
+  border-radius: 18px;
+  padding: 2.5rem;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.post-title {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: var(--color-accent);
+  font-weight: 700;
+  font-family: 'MiFuente', 'Roboto', Arial, sans-serif;
+}
+
+.post-body {
+  font-size: 1.1rem;
+  color: var(--color-text);
+  margin-bottom: 1.5rem;
+  line-height: 1.6em;
+}
+
+.post-meta {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* =========================
+   OCULTAR BOTONES DE RESPONDER
+   ========================= */
+
+/* Opción 1: Ocultar por clase */
+.btn-responder,
+.reply-btn,
+.responder-btn {
+  display: none !important;
+}
+
+/* Opción 2: Ocultar por texto del botón */
+button:contains("Responder"),
+a:contains("Responder") {
+  display: none !important;
+}
+
+/* Opción 3: Ocultar botones dentro de comentarios */
+.comentario button,
+.comentario .btn,
+.comentario-footer button,
+.comentario-footer .btn {
+  display: none !important;
+}
+
+/* Opción 4: Ocultar solo botones específicos */
+.comentario .btn[onclick*="responder"],
+.comentario button[onclick*="responder"],
+.comentario a[href*="responder"] {
+  display: none !important;
+}
+
+/* Opción 5: Si están en el footer del comentario */
+.comentario-footer .btn,
+.comentario-footer button,
+.comentario-footer a {
+  display: none !important;
+}
+
+/* =========================
+   COMENTARIOS SIN BOTÓN RESPONDER
+   ========================= */
+.comments-section {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.comentario {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-left: 4px solid var(--color-accent);
+  position: relative;
+  z-index: 2;
+}
+
+.comentario-header {
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+}
+
+.comentario-body {
+  margin: 0.5rem 0 1rem 0;
+  color: var(--color-text);
+  line-height: 1.5em;
+}
+
+.comentario-footer {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.respuesta {
+  background: #f8f8f8;
+  margin-left: 2rem;
+  margin-top: 1rem;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border-left: 3px solid #ccc;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+
+.form-comentario {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-top: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.form-comentario textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+}
+
+/* =========================
+   BOTONES GENERALES
+   ========================= */
+.btn,
+.btn-contacto,
+.btn-crear-post,
+.btn-submit,
+.btn-volver,
+.btn-cancel {
+  display: inline-block;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.btn:hover,
+.btn:focus,
+.btn-crear-post:hover,
+.btn-submit:hover,
+.btn-volver:hover,
+.btn-cancel:hover {
+  background: #444;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  outline: none;
+}
+
+.form-comentario button {
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.form-comentario button:hover {
+  background: #444;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.btn-volver {
+  display: block;
+  margin-top: 2rem;
+  text-align: center;
+  max-width: 150px;
+}
+
+/* =========================
+   FOOTER PEQUEÑO Y SIN MOLESTIAS
+   ========================= */
+footer {
+  background: rgba(255, 255, 255, 0.98);
+  color: #666;
+  text-align: center;
+  font-family: 'Roboto', Arial, sans-serif;
+  width: 100%;
+  padding: 0.4rem 0; /* MÁS PEQUEÑO */
+  border-top: 1px solid #eee;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  font-size: 0.8rem; /* texto más pequeño */
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.05);
+  height: 40px; /* altura fija pequeña */
+}
+
+/* OCULTAR footer en crear post para evitar molestias */
+body.create-post footer {
+  display: none !important;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media (max-width: 768px) {
+  .post, .post img {
+    max-width: 98vw;
+  }
+  
+  .post img {
+    height: 180px;
+  }
+  
+  .post h3, .post p {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+  
+  main {
+    padding-bottom: 50px; /* menos espacio para footer pequeño */
+  }
+  
+  footer {
+    height: 35px;
+    padding: 0.5rem 0;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .post, .post img {
+    max-width: 98vw;
+    height: 150px;
+    border-radius: 12px 12px 0 0;
+  }
+  
+  .post h3, .post p {
+    margin-left: 0.7em;
+    margin-right: 0.7em;
+  }
+  
+  .crear-post-container {
+    padding: 0 0.5em;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.95rem;
+  }
+  
+  footer {
+    height: 30px;
+    padding: 0.4rem 0;
+    font-size: 0.7rem;
+  }
+  
+  main {
+    padding-bottom: 40px;
+  }
+}
+
+/* =========================
+   MODO OSCURO
+   ========================= */
+body.dark-mode {
+  --color-bg: #181818;
+  --color-text: #eee;
+  --color-accent: #fff;
+  --color-btn-bg: #111;
+  --color-btn-bg-hover: #444;
+  --color-gradient: linear-gradient(135deg, #232323 0%, #444 100%);
+  background: var(--color-gradient);
+  color: var(--color-text);
+}
+
+body.dark-mode header {
+  background: #222;
+  color: #eee;
+  border-color: #000;
+}
+
+body.dark-mode .blog-footer {
+  background: #333;
+  color: #999;
+  border-color: #000;
+}
+
+body.dark-mode .post {
+  background: #232323;
+  border-color: #333;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.22);
+}
+
+body.dark-mode .post h3 {
+  color: #fff;
+}
+
+body.dark-mode .post p {
+  color: #ccc;
+}
+
+body.dark-mode .post-detail {
+  background: #232323;
+  border-color: #333;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.22);
+}
+
+body.dark-mode .comentario {
+  background: #232323;
+  border-color: #333;
+  border-left-color: #fff;
+}
+
+body.dark-mode .respuesta {
+  background: #1a1a1a;
+  border-left-color: #666;
+}
+
+body.dark-mode .post-form,
+body.dark-mode .form-comentario {
+  background: #232323;
+  border-color: #333;
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea {
+  background: #1a1a1a;
+  border-color: #444;
+  color: #eee;
+}
+
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group textarea:focus {
+  border-color: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode .post-title,
+body.dark-mode .comentario-header,
+body.dark-mode label {
+  color: #fff;
+}
+
+body.dark-mode .btn,
+body.dark-mode .btn-submit,
+body.dark-mode .btn-volver,
+body.dark-mode .btn-cancel,
+body.dark-mode .form-comentario button {
+  background: #fff;
+  color: #111;
+}
+
+body.dark-mode .btn:hover,
+body.dark-mode .btn-submit:hover,
+body.dark-mode .btn-volver:hover,
+body.dark-mode .btn-cancel:hover,
+body.dark-mode .form-comentario button:hover {
+  background: #444;
+  color: #fff;
+}
+
+body.dark-mode .cv-btn,
+body.dark-mode .luna-btn {
+  color: #fff;
+}
+
+/* =========================
+   CREAR POST MINIMALISTA
+   ========================= */
+.post-form, .form-group {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1px solid #222;
+  border-radius: 6px;
+  background: #fff;
+  color: #111;
+  font-family: inherit;
+  font-size: 1em;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  display: none;
+}
+
+.error-message.show { 
+  display: block; 
+}
+
+.form-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* =========================
+   SCROLL OFFSET
+   ========================= */
+#blog,
+#crear-post {
+  scroll-margin-top: 100px;
+}
+.comentario-reply {
+  display: none !important;
+}
