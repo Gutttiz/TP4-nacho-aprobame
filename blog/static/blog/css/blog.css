@@ -747,3 +747,20 @@ body.dark-mode .luna-btn {
 .comentario-reply {
   display: none !important;
 }
+/* =========================
+   MINIATURAS DE POST LIST - ANCHO REDUCIDO
+   ========================= */
+.blog-posts .post img {
+    width: 80%;         /* la imagen ocupa solo el 80% del ancho del post */
+    height: auto;       /* mantiene proporciones */
+    max-height: 180px;  /* altura moderada */
+    display: block;
+    margin: 0 auto;     /* centra la imagen dentro del post */
+    border-radius: var(--radius-sm);
+    object-fit: cover;  /* recorta si es necesario */
+    transition: transform 0.3s ease;
+}
+
+.blog-posts .post:hover img {
+    transform: scale(1.05);
+}

@@ -13,6 +13,8 @@
             <p class="post-body">{{ post.contenido }}</p>
             <div class="post-meta">
                 <small>Publicado el {{ post.creado|date:"d M Y H:i" }}</small>
+                <!-- SOLO AGREGAR ESTA LÍNEA: -->
+                <br><small>📝 Comentarios: {{ total_comentarios }}/{{ max_comentarios }}</small>
             </div>
         </article>
 
@@ -30,7 +32,6 @@
                     </div>
                     <div class="comentario-footer">
                         <small>{{ comentario.creado|date:"d M Y H:i" }}</small>
-                        <a href="#" class="comentario-reply">Responder</a>
                     </div>
                     {% for respuesta in comentario.respuestas.all %}
                         <div class="respuesta">
@@ -53,16 +54,48 @@
             {% endfor %}
         </div>
 
-        <div class="form-comentario">
-            <h3>Poner un comentario</h3>
-            <form method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Enviar</button>
-            </form>
-        </div>
+        <!-- CAMBIAR TODO ESTE BLOQUE: -->
+        {% if puede_comentar %}
+            <div class="form-comentario">
+                <h3>Agregar Comentario</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <p>
+                        <label>Nombre:</label><br>
+                        <input type="text" name="autor" required maxlength="100">
+                    </p>
+                    <p>
+                        <label>Comentario:</label><br>
+                        <textarea name="contenido" required rows="4" cols="50"></textarea>
+                    </p>
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="alert">
+                <p><strong>❌ Comentarios cerrados</strong><br>
+                Este post alcanzó el límite de {{ max_comentarios }} comentarios.</p>
+            </div>
+        {% endif %}
+
+        <!-- Mostrar mensajes -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
 
         <a href="{% url 'blog:post_list' %}" class="btn-volver">Volver al Blog</a>
-      </div>
+    </div>
 </section>
+
+<style>
+.alert {
+    background: #f0f0f0;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    border-left: 4px solid #007bff;
+}
+</style>
 {% endblock %}

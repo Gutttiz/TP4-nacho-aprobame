@@ -19,6 +19,14 @@
             <label for="{{ form.imagen.id_for_label }}">Imagen (opcional):</label>
             {{ form.imagen }}
         </div>
+        
+        <!-- SOLO AGREGAR ESTE BLOQUE: -->
+        <div class="form-group">
+            <label for="{{ form.max_comentarios.id_for_label }}">Límite de comentarios:</label>
+            {{ form.max_comentarios }}
+            <small>Número máximo de comentarios permitidos (por defecto: 100)</small>
+        </div>
+        
         <div class="form-buttons">
             <button type="submit" class="btn-submit" id="submitBtn">Crear Post</button>
             <a href="{% url 'blog:post_list' %}" class="btn-cancel">Cancelar</a>
@@ -27,6 +35,7 @@
 </div>
 
 <script>
+// TU SCRIPT EXISTENTE SE MANTIENE IGUAL
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('postForm');
     const tituloField = document.getElementById('id_titulo');
@@ -35,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const tituloError = document.getElementById('titulo-error');
     const contenidoError = document.getElementById('contenido-error');
 
-    // Función para validar un campo
     function validateField(field, errorElement) {
         const value = field.value.trim();
         if (value === '') {
@@ -49,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Validar en tiempo real mientras escribes
     tituloField.addEventListener('input', function() {
         validateField(this, tituloError);
         updateSubmitButton();
@@ -60,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSubmitButton();
     });
 
-    // Validar cuando pierdes el foco
     tituloField.addEventListener('blur', function() {
         validateField(this, tituloError);
         updateSubmitButton();
@@ -71,7 +77,6 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSubmitButton();
     });
 
-    // Función para habilitar/deshabilitar el botón de envío
     function updateSubmitButton() {
         const tituloValid = validateField(tituloField, tituloError);
         const contenidoValid = validateField(contenidoField, contenidoError);
@@ -85,18 +90,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Validar al enviar el formulario
     form.addEventListener('submit', function(e) {
         const tituloValid = validateField(tituloField, tituloError);
         const contenidoValid = validateField(contenidoField, contenidoError);
         
         if (!tituloValid || !contenidoValid) {
-            e.preventDefault(); // Evita que se envíe el formulario
-            
-            // Mostrar alerta
+            e.preventDefault();
             alert('Por favor, completa todos los campos obligatorios.');
             
-            // Enfocar el primer campo con error
             if (!tituloValid) {
                 tituloField.focus();
             } else if (!contenidoValid) {
@@ -105,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Validación inicial al cargar la página
     updateSubmitButton();
 });
 </script>

@@ -1,48 +1,80 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib import messages
 from .models import Post, Comentario
-from .forms import ComentarioForm
+from .forms import PostForm
 
 def post_list(request):
-    posts = Post.objects.order_by('-creado')
+    posts = Post.objects.all().order_by('-creado')
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'blog/post_list.html', {'posts': posts})
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    comentarios = post.comentarios.filter(padre__isnull=True).order_by('-creado')
-
-    if request.method == 'POST':
-        form = ComentarioForm(request.POST)
-        padre_id = request.POST.get('padre_id')
-        if form.is_valid():
-            comentario = form.save(commit=False)
-            comentario.post = post
-            if padre_id:
-                comentario.padre = Comentario.objects.get(id=padre_id)
-            comentario.save()
-            return redirect('blog:post_detail', pk=post.pk)  # ✅ Corregido
-    else:
-        form = ComentarioForm()
-
-    return render(request, 'blog/post_detail.html', {
+    
+    puede_comentar = post.puede_comentar()
+    
+    # Manejo simple de comentarios
+    if request.method == 'POST' and puede_comentar:
+        autor = request.POST.get('autor', '').strip()
+        contenido = request.POST.get('contenido', '').strip()
+        
+        if autor and contenido:
+            Comentario.objects.create(
+                post=post,
+                autor=autor,
+                contenido=contenido
+            )
+            messages.success(request, '¡Comentario agregado!')
+            return redirect('blog:post_detail', pk=pk)
+        else:
+            messages.error(request, 'Complete todos los campos.')
+    elif request.method == 'POST' and not puede_comentar:
+        messages.error(request, f'Post con límite de {post.max_comentarios} comentarios alcanzado.')
+    
+    context = {
         'post': post,
-        'comentarios': comentarios,
-        'form': form
-    })
+        'puede_comentar': puede_comentar,
+        'total_comentarios': post.total_comentarios(),
+        'max_comentarios': post.max_comentarios,
+    }
+    return render(request, 'blog/post_detail.html', context)
 
-from .forms import PostForm
-
+# CAMBIAR TODA ESTA FUNCIÓN:
 def crear_post(request):
+    # VERIFICACIÓN COMPLETA: debe estar logueado Y ser admin
+    if not request.user.is_authenticated:
+        messages.error(request, 'Debes iniciar sesión para crear posts.')
+        return redirect('blog:post_list')  # O redirigir a login si tienes
+    
+    if not (request.user.is_superuser or request.user.is_staff):
+        messages.error(request, 'Solo administradores pueden crear posts.')
+        return redirect('blog:post_list')
+
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, '¡Post creado exitosamente!')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                # Devuelve la lista de posts actualizada
                 posts = Post.objects.all().order_by('-creado')
                 return render(request, 'blog/post_list.html', {'posts': posts})
-            return redirect('blog:post_list')  # ✅ Cambiado de 'blog:index' a 'blog:post_list'
+            return redirect('blog:post_list')
+        else:
+            messages.error(request, 'Error al crear el post. Revisa los campos.')
     else:
         form = PostForm()
+    
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         return render(request, 'blog/crear_post.html', {'form': form})
     return render(request, 'blog/crear_post.html', {'form': form})
+
+@user_passes_test(lambda u: u.is_staff or u.is_superuser)
+def delete_post(request, pk):
+    if request.method == "POST":
+        post = get_object_or_404(Post, pk=pk)
+        post.delete()
+    return redirect("blog:post_list")
