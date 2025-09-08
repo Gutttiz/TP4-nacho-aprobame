@@ -5,6 +5,17 @@
     <div class="post-detail">
         <article class="post-content">
             <h2 class="post-title">{{ post.titulo }}</h2>
+
+            {% if user.is_staff %}
+                <form method="post" action="{% url 'blog:delete_post' post.pk %}" 
+                      onsubmit="return confirm('¿Eliminar este post?')" style="display:inline; margin-bottom:1rem;">
+                    {% csrf_token %}
+                    <button type="submit" style="color:red; border:1px solid red; padding:0.3rem 0.8rem; background:white; cursor:pointer; border-radius:4px;">
+                        🗑️ Eliminar este post
+                    </button>
+                </form>
+            {% endif %}
+
             {% if post.imagen %}
                 <div class="post-image">
                     <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
@@ -13,19 +24,33 @@
             <p class="post-body">{{ post.contenido }}</p>
             <div class="post-meta">
                 <small>Publicado el {{ post.creado|date:"d M Y H:i" }}</small>
-                <!-- SOLO AGREGAR ESTA LÍNEA: -->
-                <br><small>📝 Comentarios: {{ total_comentarios }}/{{ max_comentarios }}</small>
+                <br><small>💬 Comentarios: {{ total_comentarios }}/{{ max_comentarios }}</small>
             </div>
         </article>
 
         <div class="comments-section">
             <h3>Comentarios</h3>
             {% for comentario in post.comentarios.all %}
-                <div class="comentario">
+                <div class="comentario" style="border:1px solid #eee; padding:1rem; margin-bottom:0.5rem; border-radius:6px;">
                     <div class="comentario-header">
-                        <span class="comentario-usuario">
-                            @{{ comentario.autor }}
-                        </span>
+                        <span class="comentario-usuario">@{{ comentario.autor }}</span>
+
+                        {% if user.is_staff %}
+                            <form method="post" action="{% url 'blog:delete_comment' comentario.pk %}" 
+                                onsubmit="return confirm('¿Eliminar comentario de {{ comentario.autor }}?')"
+                                style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" style="
+                                    all: unset; 
+                                    color: red; 
+                                    cursor: pointer; 
+                                    text-decoration: underline;
+                                ">
+                                    Eliminar
+                                </button>
+                            </form>
+                        {% endif %}
+
                     </div>
                     <div class="comentario-body">
                         <p>{{ comentario.contenido }}</p>
@@ -33,28 +58,12 @@
                     <div class="comentario-footer">
                         <small>{{ comentario.creado|date:"d M Y H:i" }}</small>
                     </div>
-                    {% for respuesta in comentario.respuestas.all %}
-                        <div class="respuesta">
-                            <div class="comentario-header">
-                                <span class="comentario-usuario">
-                                    @{{ respuesta.autor }}
-                                </span>
-                            </div>
-                            <div class="comentario-body">
-                                <p>{{ respuesta.contenido }}</p>
-                            </div>
-                            <div class="comentario-footer">
-                                <small>{{ respuesta.creado|date:"d M Y H:i" }}</small>
-                            </div>
-                        </div>
-                    {% endfor %}
                 </div>
             {% empty %}
                 <p>No hay comentarios todavía. Sé el primero en comentar.</p>
             {% endfor %}
         </div>
 
-        <!-- CAMBIAR TODO ESTE BLOQUE: -->
         {% if puede_comentar %}
             <div class="form-comentario">
                 <h3>Agregar Comentario</h3>
@@ -66,23 +75,16 @@
                     </p>
                     <p>
                         <label>Comentario:</label><br>
-                        <textarea name="contenido" required rows="4" cols="50"></textarea>
+                        <textarea name="contenido" required rows="4" cols="50" maxlength="300"></textarea>
                     </p>
                     <button type="submit">Enviar</button>
                 </form>
             </div>
         {% else %}
             <div class="alert">
-                <p><strong>❌ Comentarios cerrados</strong><br>
+                <p><strong>⚠ Comentarios cerrados</strong><br>
                 Este post alcanzó el límite de {{ max_comentarios }} comentarios.</p>
             </div>
-        {% endif %}
-
-        <!-- Mostrar mensajes -->
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert">{{ message }}</div>
-            {% endfor %}
         {% endif %}
 
         <a href="{% url 'blog:post_list' %}" class="btn-volver">Volver al Blog</a>

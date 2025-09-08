@@ -78,3 +78,11 @@ def delete_post(request, pk):
         post = get_object_or_404(Post, pk=pk)
         post.delete()
     return redirect("blog:post_list")
+
+@user_passes_test(lambda u: u.is_staff or u.is_superuser)
+def delete_comment(request, pk):
+    comentario = get_object_or_404(Comentario, pk=pk)
+    post_id = comentario.post.pk  # Para redirigir al post original
+    if request.method == "POST":
+        comentario.delete()
+    return redirect("blog:post_detail", pk=post_id)

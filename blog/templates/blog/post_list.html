@@ -16,6 +16,17 @@
             <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}" style="max-width:100%; border-radius:6px; margin-bottom:0.5rem;">
         {% endif %}
         <p>{{ post.contenido|truncatewords:30 }}</p>
+        
+        {% if user.is_staff %}
+            <form method="post" action="{% url 'blog:delete_post' post.pk %}" 
+                  onsubmit="return confirm('¿Eliminar este post?')" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="color:red; border:none; background:none; cursor:pointer;">
+                    Eliminar
+                </button>
+            </form>
+        {% endif %}
+        
         <a href="{% url 'blog:post_detail' post.pk %}" class="post-link">Ver post completo</a>
     </div>
     {% empty %}
